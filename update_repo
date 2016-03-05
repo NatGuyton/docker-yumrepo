@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# rpm files (or links) should be in the directory that -o points to
+#
+BASE=/var/repo
+
+# Set YUMREPO env var beforehand...  might be able to leave blank if relative URLs work?
+#YUMREPO=
+
+cd $BASE
+for d in `find RPMS -maxdepth 2 -mindepth 2 -type d`; do
+    echo createrepo -u $YUMREPO/$d -o $d -v $d
+    createrepo -u $YUMREPO/$d -o $d -v $d
+done
+

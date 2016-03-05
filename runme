@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# defaults if user does not have env var set
+REPODIR="${REPODIR:-/home/docker/yumrepo}"
+HOSTPORT="${HOSTPORT:-9080}"
+
+if [ ! -d "$REPODIR/RPMS" ]; then 
+    mkdir -p "$REPODIR/RPMS"
+    if [ $? !- 0 ]; then
+	echo "Error creating dir '$REPODIR/RPMS'; aborting"
+	exit 1
+    fi
+fi
+
+docker run -d --name yumrepo -p ${HOSTPORT}:80 -v ${REPODIR}:/var/repo guyton/yumrepo 
+

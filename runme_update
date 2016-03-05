@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# defaults if user does not have env var set
+REPODIR="${REPODIR:-/home/docker/yumrepo}"
+REPO_URL="${REPO_URL:-http://yumrepo.guyton.net:9080}"
+
+if [ ! -d "$REPODIR/RPMS" ]; then
+    mkdir -p "$REPODIR/RPMS"
+    if [ $? !- 0 ]; then
+        echo "Error creating dir '$REPODIR/RPMS'; aborting"
+        exit 1
+    fi
+fi
+
+docker run -it --rm -e YUMREPO=$REPO_URL -v ${REPODIR}:/var/repo guyton/yumrepo  update_repo
+
